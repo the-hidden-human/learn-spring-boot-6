@@ -1,0 +1,31 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: spring-security-part1
+  datasource:
+    url: jdbc:postgresql://localhost:5432/spring_learn_account
+    username: the.hidden.human
+    password:
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      dll-auto: update
+      dialect: org.hibernate.dialect.PostgreSQL15Dialect
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+  security:
+    user:
+      name: homeo
+      password: homeo
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    com.h2hm.springbootpart1: DEBUG
