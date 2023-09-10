@@ -1,19 +1,20 @@
 package com.h2hm.springbootpart1.config;
 
-import com.h2hm.springbootpart1.repository.UserInfoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
+import org.springframework.security.config.annotation.SecurityBuilder;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
@@ -21,48 +22,44 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final UserInfoRepository repository;
-
-    private AuthenticationManager authenticationManager;
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        // return new UserInfoService(repository);
-        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        manager.createUser(User.withDefaultPasswordEncoder().username("user").password("password").roles("USER").build());
-        return manager;
-    }
-
 //    @Bean
 //    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http.cors().
-//        return http.csrf().disable()
-//                .authorizeHttpRequests()
-//                .requestMatchers("/hello", "/user/new").permitAll()
-//                .and()
-//                .authorizeHttpRequests()
-//                .requestMatchers("/customer/**").authenticated()
-//                .and().formLogin()
-//                .and().build();
-//        return http.csrf().disable().cors()
+//        http
+//                .csrf(csrf -> csrf.disable())
+//                .authorizeHttpRequests( authorizeRequests ->
+//                        authorizeRequests.anyRequest()
+//                )
 //    }
 
-//    @Bean
-//    public SecurityFilterChain configure(HttpSecurity http) throws Exception {
+//    private final UserAuthenticationEntryPoint userAuthenticationEntryPoint;
 //
+//    private final AuthenticationProvider authenticationProvider;
+//
+//    public SecurityConfig(UserAuthenticationEntryPoint userAuthenticationEntryPoint, AuthenticationProvider authenticationProvider) {
+//        this.userAuthenticationEntryPoint = userAuthenticationEntryPoint;
+//        this.authenticationProvider = authenticationProvider;
 //    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authenticationProvider=new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService());
-        authenticationProvider.setPasswordEncoder(passwordEncoder());
-        return authenticationProvider;
-    }
+//
+//    @Bean
+//    public SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
+//        // http.exceptionHandling(new ExceptionHandling)
+//    }
+//
+////    @Bean
+////    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+////        http
+////                .exceptionHandling().authenticationEntryPoint(userAuthenticationEntryPoint)
+////                .and()
+////                .addFilterBefore(new UsernamePasswordAuthFilter(authenticationProvider), BasicAuthenticationFilter.class)
+////                .addFilterBefore(new JwtAuthFilter(authenticationProvider), UsernamePasswordAuthFilter)
+////                .csrf().disable()
+////                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+////                .and()
+////                .authorizeHttpRequests((requests) -> requests
+////                        .requestMatchers(HttpMethod.POST, "/v1/signIn", "/v1/signUp").permitAll()
+////                        .anyRequest().authenticated())
+////        ;
+////        return http.build();
+////    }
 
 }

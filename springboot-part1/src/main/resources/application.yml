@@ -24,6 +24,8 @@ spring:
       name: homeo
       password: homeo
 
+security.jwt.token.secret-key: the-h2hm
+
 logging:
   level:
     root: INFO
