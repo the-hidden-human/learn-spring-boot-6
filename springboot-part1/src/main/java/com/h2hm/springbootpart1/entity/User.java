@@ -1,42 +1,52 @@
-package com.h2hm.springbootpart1.config;
+package com.h2hm.springbootpart1.entity;
 
-import com.h2hm.springbootpart1.entity.UserInfo;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor
-@Slf4j
-public class UserInfoUserDetails implements UserDetails {
+@AllArgsConstructor
+@Entity
+@Table(name = "users",  schema = "public", catalog = "users")
+public class User implements UserDetails {
 
-    private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
+    @SequenceGenerator(name = "users_seq", sequenceName = "users_seq", allocationSize = 1)
+    private long id;
+
+    @Column(name = "first_name")
+    private String firstname;
+
+    @Column(name = "last_name")
+    private String lastname;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "password")
     private String password;
 
-    private List<GrantedAuthority> authorities;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-    public UserInfoUserDetails(UserInfo userInfo) {
-        name = userInfo.getName();
-        password = userInfo.getPassword();
-        log.info("Init UserInfoUserDetails");
-        authorities = Arrays.stream(userInfo.getRoles().split(",")).map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return role.getAuthorities();
     }
+
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
 
     @Override
     public String getPassword() {
@@ -45,7 +55,7 @@ public class UserInfoUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return email;
     }
 
     @Override

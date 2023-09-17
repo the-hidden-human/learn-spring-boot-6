@@ -2,6 +2,7 @@ package com.h2hm.springbootpart1;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @SpringBootApplication
 public class SpringbootPart1Application {
