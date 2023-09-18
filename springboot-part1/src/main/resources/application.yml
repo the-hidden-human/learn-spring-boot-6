@@ -14,11 +14,10 @@ spring:
     show_sql: true
     hibernate:
       generate-ddl: true
-      dll-auto: update
+      dll-auto: validate
       dialect: org.hibernate.dialect.PostgreSQL15Dialect
     properties:
       hibernate:
-        show_sql: true
         format_sql: true
 
 application:
