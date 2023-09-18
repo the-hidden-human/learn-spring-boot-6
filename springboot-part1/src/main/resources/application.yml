@@ -12,9 +12,9 @@ spring:
   jpa:
     defer-datasource-initialization: true
     show_sql: true
+    generate-ddl: true
     hibernate:
-      generate-ddl: true
-      dll-auto: validate
+      dll-auto: update
       dialect: org.hibernate.dialect.PostgreSQL15Dialect
     properties:
       hibernate:
