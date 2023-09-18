@@ -1,0 +1,36 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: spring-security-part1
+  datasource:
+    url: jdbc:postgresql://localhost:5432/spring_learn_account
+    username: the.hidden.human
+    password:
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    defer-datasource-initialization: true
+    show_sql: true
+    hibernate:
+      generate-ddl: true
+      dll-auto: update
+      dialect: org.hibernate.dialect.PostgreSQL15Dialect
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+application:
+  security:
+    jwt:
+      secret-key: nGDmbuiDuDDd436QMZH0s5RzPJMmMxSCgapID5l8hc2W
+      expiration: 86400000 # a day
+      refresh-token:
+        expiration: 604800000 # 7 days
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    com.h2hm.springbootpart1: DEBUG
